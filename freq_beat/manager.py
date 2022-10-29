@@ -9,4 +9,6 @@ import os
 def store_beat(beat, beat_name):
     if not os.path.exists("beats"):
         os.mkdir('beats')
-    beat.write(f"beats/{beat_name}.mid")
+    filename = f"beats/{beat_name}.mid"
+    print(f"Writing beat to {filename}.")
+    beat.write(filename)

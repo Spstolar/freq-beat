@@ -2,4 +2,7 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_randrum.ipynb
+      - 00_beatmanager.ipynb
+      - 01_randrum.ipynb
+      - 02_combiner.ipynb
+      - 03_notesplitter.ipynb
