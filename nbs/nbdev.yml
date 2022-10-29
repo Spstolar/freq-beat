@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "freq-beat"
+  site-url: "https://Spstolar.github.io/freq-beat"
+  description: "playing with midi"
+  repo-branch: main
+  repo-url: "https://github.com/Spstolar/freq-beat"
