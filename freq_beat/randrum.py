@@ -45,6 +45,7 @@ def drum_cleaner(drum_notes):
 # %% ../nbs/01_randrum.ipynb 6
 import pretty_midi
 import random
+from .manager import store_beat
 
 class DrumBeat:
     def __init__(self) -> None:
@@ -68,4 +69,4 @@ class DrumBeat:
         self.create_random_line(0.25, hands)
         self.create_random_line(0.25, hands)
         self.song.instruments.append(self.drums)
-        self.song.write("beats/rand-drum-beat.mid")
+        store_beat(self.song, "rand-drum-beat")

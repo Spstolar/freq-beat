@@ -3,7 +3,9 @@
 # %% auto 0
 __all__ = ['store_beat']
 
-# %% ../nbs/00_beatmanager.ipynb 4
+# %% ../nbs/00_beatmanager.ipynb 3
+import os
+
 def store_beat(beat, beat_name):
     if not os.path.exists("beats"):
         os.mkdir('beats')
