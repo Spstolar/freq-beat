@@ -5,4 +5,5 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://Spstolar.github.io',
                 'git_url': 'https://github.com/Spstolar/freq-beat',
                 'lib_path': 'freq_beat'},
-  'syms': {'freq_beat.core': {'freq_beat.core.foo': ('core.html#foo', 'freq_beat/core.py')}}}
+  'syms': { 'freq_beat.randrum': { 'freq_beat.randrum.foo': ('randrum.html#foo', 'freq_beat/randrum.py'),
+                                   'freq_beat.randrum.say_hello': ('randrum.html#say_hello', 'freq_beat/randrum.py')}}}
