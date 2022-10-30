@@ -55,15 +55,16 @@ class Beat:
     def __init__(self) -> None:
         self.song = pretty_midi.PrettyMIDI()
         self.drums = pretty_midi.Instrument(program=0)
-        self.notes = list(midi_map2.keys())
+        self.possible_pitches = list(midi_map2.keys())
         self.beat_name = "rand-beat"
+        self.notes = []
         
-    def create_random_line(self, beat_length, drum_group, song_length=10, play_prob=0.4):
+    def create_random_line(self, beat_length, song_length=10, play_prob=0.4):
         num_beats = int(song_length // beat_length)
         for i in range(num_beats):
             play = random.uniform(0, 1) < play_prob
             if play:
-                pitch = random.choice(self.notes)
+                pitch = random.choice(self.possible_pitches)
                 start = i * beat_length
                 end = start + beat_length
                 note = pretty_midi.Note(start=start, end=end, velocity=80, pitch=pitch)
@@ -71,18 +72,34 @@ class Beat:
                 if split:
                     notes = split_note(note, 4)
                     for piece in notes:
-                        self.drums.notes.append(piece)
+                        self.notes.append(piece)
                 else:
-                    self.drums.notes.append(note)
+                    self.notes.append(note)
+                    
+    def add_to_end(self, notes):
+        current_end = max([note.end for note in self.notes])
+        self.notes.extend(shift_notes(notes, current_end))
                     
     def create_random_song(self):
-        self.create_random_line(0.25, feet, play_prob=.75)
-        self.create_random_line(0.25, hands)
-        self.create_random_line(0.25, hands)
+        # right now allowing three notes at the same time
+        self.create_random_line(0.25, play_prob=.75)
+        motif = Motif(shift_notes(self.notes[-10:]))
+        motif_halftime = motif.concretize(2, {})
+        motif_doubletime = motif.concretize(0.5, {})
+        self.create_random_line(0.25)
+        self.create_random_line(0.25)
+        self.add_to_end(motif_halftime)
+        self.add_to_end(motif_doubletime)
+
+        for note in self.notes:
+            self.drums.notes.append(note)
         self.song.instruments.append(self.drums)
         store_beat(self.song, self.beat_name)
 
 # %% ../nbs/01_randrum.ipynb 6
+from .motif import Motif
+from .manager import alter_note, shift_notes
+
 class DrumBeat(Beat):
     def __init__(self) -> None:
         super().__init__()
@@ -98,10 +115,24 @@ class DrumBeat(Beat):
                 start = i * beat_length
                 end = start + beat_length
                 note = pretty_midi.Note(start=start, end=end, velocity=80, pitch=pitch)
-                split = random.uniform(0, 1) < 0.8
-                if split:
-                    notes = split_note(note, 4)
-                    for piece in notes:
-                        self.drums.notes.append(piece)
+                split_rand = random.uniform(0, 1)
+                if split_rand > 0.75:
+                    if split_rand > 0.95:
+                        pieces = split_note(note, 8)
+                    elif split_rand > 0.80:
+                        pieces = split_note(note, 4)
+                    else:
+                        pieces = split_note(note, 2)
+                    for piece in pieces:
+                        self.notes.append(piece)
                 else:
-                    self.drums.notes.append(note)
+                    self.notes.append(note)
+                    
+    def create_random_song(self):
+        self.create_random_line(0.25, feet, play_prob=.75)
+        self.create_random_line(0.25, hands)
+        self.create_random_line(0.25, hands)
+        for note in self.notes:
+            self.drums.notes.append(note)
+        self.song.instruments.append(self.drums)
+        store_beat(self.song, self.beat_name)
