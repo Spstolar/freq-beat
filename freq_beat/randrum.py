@@ -116,10 +116,10 @@ class DrumBeat(Beat):
                 end = start + beat_length
                 note = pretty_midi.Note(start=start, end=end, velocity=80, pitch=pitch)
                 split_rand = random.uniform(0, 1)
-                if split_rand > 0.75:
+                if split_rand > 0.70:
                     if split_rand > 0.95:
                         pieces = split_note(note, 8)
-                    elif split_rand > 0.80:
+                    elif split_rand > 0.85:
                         pieces = split_note(note, 4)
                     else:
                         pieces = split_note(note, 2)
