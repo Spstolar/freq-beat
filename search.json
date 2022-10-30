@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "motif.html",
+    "href": "motif.html",
+    "title": "motif",
+    "section": "",
+    "text": "source\n\nMotif\n\n Motif (contents, end=None)\n\nInitialize self. See help(type(self)) for accurate signature.\nFor example:\n\n{\"cat\": 0, \"dog\": 5}.get(\"frog\", 2)\n\n2\n\n\n\ncontents = [\n    Note(start=0, end=1, pitch=0, velocity=80),\n    Note(start=1, end=2, pitch=0, velocity=80),\n    Note(start=1, end=2, pitch=1, velocity=80),\n    Note(start=2, end=3, pitch=0, velocity=80),\n    Note(start=3, end=4, pitch=0, velocity=80),\n    Note(start=3, end=4, pitch=1, velocity=80)\n]\n\nmotif = Motif(contents)\n\n\nmotif.end\n\n4\n\n\nhas the “kick” playing on pitch 0 and the snare playing on pitch 1.\nIf you are at 120 BPM, your beat length is actually 0.5 seconds. If your kick MIDI pitch is 50 and your snare MIDI pitch is 55, then you make this concrete with:\n\nmotif.concretize(0.5, {0: 50, 1: 55})\n\n[Note(start=0.000000, end=0.500000, pitch=50, velocity=80),\n Note(start=0.500000, end=1.000000, pitch=50, velocity=80),\n Note(start=0.500000, end=1.000000, pitch=55, velocity=80),\n Note(start=1.000000, end=1.500000, pitch=50, velocity=80),\n Note(start=1.500000, end=2.000000, pitch=50, velocity=80),\n Note(start=1.500000, end=2.000000, pitch=55, velocity=80)]"
+  },
+  {
+    "objectID": "randrum.html",
+    "href": "randrum.html",
+    "title": "randrum",
+    "section": "",
+    "text": "source\n\ndrum_cleaner\n\n drum_cleaner (drum_notes)\n\n\nmidi_map2\n\n{36: 'C',\n 37: 'C#',\n 38: 'D',\n 39: 'D#',\n 40: 'E',\n 41: 'F',\n 42: 'F#',\n 43: 'G',\n 44: 'G#',\n 45: 'A',\n 46: 'A#',\n 47: 'B',\n 48: 'C',\n 49: 'C#',\n 50: 'D',\n 51: 'D#'}\n\n\n\nsource\n\n\nBeat\n\n Beat ()\n\nInitialize self. See help(type(self)) for accurate signature.\n\nsource\n\n\nDrumBeat\n\n DrumBeat ()\n\nInitialize self. See help(type(self)) for accurate signature.\n\ndrum_beat = DrumBeat()\ndrum_beat.create_random_song()\n\nWriting beat to beats/rand-drum-beat.mid.\n\n\n\nbeat = Beat()\nbeat.create_random_song()\n\nWriting beat to beats/rand-beat.mid."
+  },
+  {
+    "objectID": "notesplitter.html",
+    "href": "notesplitter.html",
+    "title": "splitter",
+    "section": "",
+    "text": "source\n\nsplit_note\n\n split_note (note:pretty_midi.containers.Note, num_pieces)\n\n\nnote = Note(start=2, end=4, velocity=80, pitch=40)\n\n\nsplit_note(note, num_pieces=4)\n\n[Note(start=2.000000, end=2.500000, pitch=40, velocity=80),\n Note(start=2.500000, end=3.000000, pitch=40, velocity=80),\n Note(start=3.000000, end=3.500000, pitch=40, velocity=80),\n Note(start=3.500000, end=4.000000, pitch=40, velocity=80)]"
+  },
+  {
+    "objectID": "combiner.html",
+    "href": "combiner.html",
+    "title": "combiner",
+    "section": "",
+    "text": "source\n\ntransfer_notes_from_beat\n\n transfer_notes_from_beat (beat_notes, target, offset)\n\n\ndef create_combined_beat(random_beat_list=None):\n    if random_beat_list is None:\n        beat_cats = ['basic', 'metal', 'misc']\n        beat_folders = [Path(\"beats\") / cat for cat in beat_cats]\n\n        beats = []\n        for folder in beat_folders:\n            beats_in_folder = os.listdir(folder)\n            for beat in beats_in_folder:\n                beat_filename = folder / beat\n                beats.append(beat_filename)\n        random_beat_list = choices(beats, k=10)\n    offset = 0\n\n    for beat_file in random_beat_list:\n        beat = pretty_midi.PrettyMIDI(str(beat_file))\n        beat_notes = beat.instruments[0].notes\n        transfer_notes_from_beat(beat_notes, drums, offset)\n        offset += beat.get_end_time()\n\n    new_song = pretty_midi.PrettyMIDI()\n    drums = pretty_midi.Instrument(program=0)\n    new_song.instruments.append(drums)\n    store_beat(new_song, \"test-drums\")"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "freq-beat",
+    "section": "",
+    "text": "Create short, random MIDI segments, focused on drums.\nPaste segments together for larger songs.\nMore extreme, glitchy MIDI outputs."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "freq-beat",
+    "section": "Install",
+    "text": "Install\npip install freq_beat"
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "freq-beat",
+    "section": "How to use",
+    "text": "How to use\nFill me in please! Don’t forget code examples:\n\ndrum_beat = DrumBeat()\ndrum_beat.create_random_song()"
+  },
+  {
+    "objectID": "beatmanager.html",
+    "href": "beatmanager.html",
+    "title": "manager",
+    "section": "",
+    "text": "source\n\nstore_beat\n\n store_beat (beat, beat_name)\n\n\nsource\n\n\nalter_note\n\n alter_note (note:pretty_midi.containers.Note, ratio=None,\n             new_velocity=None, new_pitch=None)\n\n\nsource\n\n\nshift_notes\n\n shift_notes (notes, shift_amount=None)\n\n\nsource\n\n\ncopy_note\n\n copy_note (note:pretty_midi.containers.Note, start=None, end=None,\n            velocity=None, pitch=None)\n\n\nnotes = [   \n    Note(start=1, end=2, pitch=1, velocity=80),\n    Note(start=2, end=3, pitch=0, velocity=80),\n    Note(start=3, end=4, pitch=0, velocity=80),\n    Note(start=3, end=4, pitch=1, velocity=80)\n]\n\n\nshift_notes(notes, -1)\n\n[Note(start=0.000000, end=1.000000, pitch=1, velocity=80),\n Note(start=1.000000, end=2.000000, pitch=0, velocity=80),\n Note(start=2.000000, end=3.000000, pitch=0, velocity=80),\n Note(start=2.000000, end=3.000000, pitch=1, velocity=80)]\n\n\n\nshift_notes(notes)\n\n[Note(start=0.000000, end=1.000000, pitch=1, velocity=80),\n Note(start=1.000000, end=2.000000, pitch=0, velocity=80),\n Note(start=2.000000, end=3.000000, pitch=0, velocity=80),\n Note(start=2.000000, end=3.000000, pitch=1, velocity=80)]\n\n\n\nshift_notes(notes, 3)\n\n[Note(start=4.000000, end=5.000000, pitch=1, velocity=80),\n Note(start=5.000000, end=6.000000, pitch=0, velocity=80),\n Note(start=6.000000, end=7.000000, pitch=0, velocity=80),\n Note(start=6.000000, end=7.000000, pitch=1, velocity=80)]"
+  }
+]
